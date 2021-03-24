@@ -11,7 +11,6 @@ import scala.swing.event.Event
 trait ControllerInteface extends Publisher{
     def player_amount(): Int
     def set_trump_card(): GamestateInterface
-    def generate_hands(round_number: Int, players: List[Player]): GamestateInterface
     def set_guess(guess: Int): GamestateInterface
     def play_card(want_to_play: Card): GamestateInterface
     def card_playable(active_player: Player, want_to_play: Card, serve_card: Card): Boolean

@@ -32,7 +32,7 @@ class TUI(controller: ControllerInteface) extends Reactor {
       case event: mini_over =>
         println("Trick won by " + controller.get_mini_winner().getName + "!")
       case event: round_over =>
-        println(controller.getGamestate().getGame_table)
+        println(controller.getGamestate().game_table)
       case event: game_over =>
         println("Game Over!")
         println(controller.getGamestate().calc_total())
@@ -75,7 +75,7 @@ class TUI(controller: ControllerInteface) extends Reactor {
   }
 
   def start_round() : Unit = {
-    println("- - - - - Round " + (controller.getGamestate().getRound_number+1) + " started - - - - -")
+    println("- - - - - Round " + (controller.getGamestate().round_number+1) + " started - - - - -")
     println("Generating hands . . .")
     println("Generating trumpcard . . .\n\n\n")
   }
@@ -98,7 +98,7 @@ class TUI(controller: ControllerInteface) extends Reactor {
 
   def guess(): Unit = {
     val active_player = controller.get_player(controller.active_player_idx())
-    println("Trump card: " + controller.getGamestate().getTrump_card)
+    println("Trump card: " + controller.getGamestate().trump_Card)
     println(active_player.getName + " how many tricks are you going to make?")
     println(active_player.showHand()+"\n\n\n\n\n")
   }
@@ -122,7 +122,7 @@ class TUI(controller: ControllerInteface) extends Reactor {
 
   def play_card(): Unit = {
     val active_player = controller.get_player(controller.active_player_idx())
-    println("Trump card: " + controller.getGamestate().getTrump_card)
+    println("Trump card: " + controller.getGamestate().trump_Card)
     println(active_player.getName + " which card do you want to play ?")
     println("Your cards: " + active_player.showHand()+"\n\n\n\n\n")
   }

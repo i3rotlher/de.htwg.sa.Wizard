@@ -40,7 +40,7 @@ class SwingGUI(controller: ControllerInteface) extends Frame {
     case event: mini_over =>
       println("Trick won by " + controller.get_mini_winner().getName + "!");
     case event: round_over =>
-      println(controller.getGamestate().getGame_table);
+      println(controller.getGamestate().game_table);
     case event: game_over =>
       println("Game Over!")
       println(controller.getGamestate().calc_total())
@@ -131,9 +131,9 @@ class SwingGUI(controller: ControllerInteface) extends Frame {
     wish_trump_panel = new FlowPanel {
       val label = new Label("A wizard has been drawn as trump! " + controller.get_player(controller.active_player_idx()).getName + " which color do you want to be trump?")
       val trump_label = new Label("Trump card:")
-      var trump = Card_panel(controller.getGamestate().getTrump_card)
+      var trump = Card_panel(controller.getGamestate().trump_Card)
       val hand_label = new Label("Your cards:")
-      var hand = new Hand_panel(controller.getGamestate().getPlayers(controller.active_player_idx()).getHand)
+      var hand = new Hand_panel(controller.getGamestate().players(controller.active_player_idx()).getHand)
 
       val button_red = new Button("Red") {
         background = Color.RED
@@ -190,9 +190,9 @@ class SwingGUI(controller: ControllerInteface) extends Frame {
     set_guess_panel = new FlowPanel {
       val label = new Label(controller.get_player(controller.active_player_idx()).getName + " how many tricks are you going to make?")
       val trump_label = new Label("Trump card:")
-      var trump = Card_panel(controller.getGamestate().getTrump_card)
+      var trump = Card_panel(controller.getGamestate().trump_Card)
       val hand_label = new Label("Your cards:")
-      var hand = new Hand_panel(controller.getGamestate().getPlayers(controller.active_player_idx()).getHand)
+      var hand = new Hand_panel(controller.getGamestate().players(controller.active_player_idx()).getHand)
       var text_field = new TextField("Enter your guess here ...", 14)
       var save_button = new Button("Save Game") {
         name = "save"
@@ -228,9 +228,9 @@ class SwingGUI(controller: ControllerInteface) extends Frame {
     playing_panel = new FlowPanel {
       val label = new Label(controller.get_player(controller.active_player_idx()).getName + " which card to you want to play?")
       val trump_label = new Label("Trump card:")
-      var trump = Card_panel(controller.getGamestate().getTrump_card)
+      var trump = Card_panel(controller.getGamestate().trump_Card)
       val hand_label = new Label("Your cards:")
-      var hand = new Hand_panel(controller.getGamestate().getPlayers(controller.active_player_idx()).getHand)
+      var hand = new Hand_panel(controller.getGamestate().players(controller.active_player_idx()).getHand)
       var text_field = new TextField("Enter your cardnumber here ...", 14)
 
       contents+=label

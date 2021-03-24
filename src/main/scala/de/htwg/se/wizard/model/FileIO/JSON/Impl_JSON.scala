@@ -109,26 +109,26 @@ case class Impl_JSON() extends File_IO_Interface {
   def gameStateToJson(game: GamestateInterface, state: Event) = {
     Json.obj(
       "state" -> state.getClass.toString.replace("class de.htwg.se.wizard.control.controllerBaseImpl.", ""),
-      "game_table" -> game.getGame_table,
-      "player_amount" -> game.getPlayers.size,
+      "game_table" -> game.game_table,
+      "player_amount" -> game.players.size,
       "players_names" -> Json.toJson(
-        for (player <- game.getPlayers) yield {
+        for (player <- game.players) yield {
           Json.toJson(player.name)
         }
       ),
       "players_hands" -> Json.toJson(
-        for (player <- game.getPlayers) yield {
+        for (player <- game.players) yield {
           Json.toJson(player.hand)
         }
       ),
-      "round_number" -> game.getRound_number,
-      "active_player_idx" -> game.getActive_player_idx,
-      "trump_card" -> game.getTrump_card,
-      "serve_card" -> game.getServe_card,
-      "made_tricks" -> game.getMade_tricks,
-      "playedCards" -> game.getPlayedCards,
-      "mini_starter_idx" -> game.getMini_starter,
-      "mini_played_counter" -> game.getMini_played_counter
+      "round_number" -> game.round_number,
+      "active_player_idx" -> game.active_Player_idx,
+      "trump_card" -> game.trump_Card,
+      "serve_card" -> game.serve_card,
+      "made_tricks" -> game.made_tricks,
+      "playedCards" -> game.playedCards,
+      "mini_starter_idx" -> game.mini_starter_idx,
+      "mini_played_counter" -> game.mini_played_counter
     )
   }
 

@@ -28,18 +28,18 @@ class TUITest extends AnyWordSpec {
     }
     "be able to Create a player when given a name" in {
       tui.create_player("Karl")
-      controller.game.getPlayers(0).getName shouldBe "Karl"
+      controller.game.players(0).getName shouldBe "Karl"
     }
     "be able to reset the ceated players name" in {
       tui.create_player("Karl")
       tui.create_player("r")
-      controller.game.getPlayers(1).getName shouldBe "unknown"
+      controller.game.players(1).getName shouldBe "unknown"
     }
     "be able to redo a players name" in {
       tui.create_player("Karl")
       tui.create_player("r")
       tui.create_player("y")
-      controller.game.getPlayers(0).getName shouldBe "Karl"
+      controller.game.players(0).getName shouldBe "Karl"
     }
     "return false if a wrong color has been inputed" in {
       tui.check_trump_wish("pink") shouldBe false
@@ -73,9 +73,9 @@ class TUITest extends AnyWordSpec {
       game = game.create_player("Prof")
       controller.game = game
       controller.start_round(1)
-      val old_card = controller.game.getPlayers(controller.active_player_idx()).getHand(0)
+      val old_card = controller.game.players(controller.active_player_idx()).getHand(0)
       tui.get_card("1")
-      controller.game.getPlayers(controller.active_player_idx()).getHand.contains(old_card) shouldBe false
+      controller.game.players(controller.active_player_idx()).getHand.contains(old_card) shouldBe false
     }
     "should not invoke play_card if the input for the card selection was incorrect" in {
       var game: GamestateInterface = Gamestate().set_player_amount(3)
@@ -84,9 +84,9 @@ class TUITest extends AnyWordSpec {
       game = game.create_player("Prof")
       controller.game = game
       controller.start_round(1)
-      val old_cards = controller.game.getPlayers(controller.active_player_idx()).getHand
+      val old_cards = controller.game.players(controller.active_player_idx()).getHand
       tui.get_card("-a")
-      controller.game.getPlayers(controller.active_player_idx()).getHand shouldBe old_cards
+      controller.game.players(controller.active_player_idx()).getHand shouldBe old_cards
 
     }
     "should invoke diffrent matches for each diffrent state it can be" in {

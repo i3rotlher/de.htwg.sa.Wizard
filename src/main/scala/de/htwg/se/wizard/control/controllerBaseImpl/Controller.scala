@@ -2,10 +2,10 @@ package de.htwg.se.wizard.control.controllerBaseImpl
 
 import com.google.inject.Inject
 import de.htwg.se.wizard.control.ControllerInteface
+import de.htwg.se.wizard.model.FileIO.File_IO_Interface
 import de.htwg.se.wizard.model.cardsComponent.{Card, Cards}
 import de.htwg.se.wizard.model.gamestateComponent.GamestateInterface
 import de.htwg.se.wizard.model.playerComponent.PlayerBaseImpl.Player
-import de.htwg.se.wizard.model.FileIO.File_IO_Interface
 
 import scala.swing.Publisher
 import scala.swing.event.Event
@@ -14,11 +14,11 @@ case class Controller @Inject() (var game: GamestateInterface, file_io: File_IO_
 
   def setGamestate(gamestate: GamestateInterface): Unit = game = gamestate
 
-  def player_amount(): Int = game.getPlayers.size
+  def player_amount(): Int = game.players.size
 
   def set_trump_card(): GamestateInterface = {
-    game = game.set_Trump_card(game.getPlayers, game.getRound_number)
-    if (game.getTrump_card.num == 14) {
+    game = game.set_Trump_card(game.players, game.round_number)
+    if (game.trump_Card.num == 14) {
       game = game.set_active_player_idx((active_player_idx()-1+player_amount())%player_amount())
       publish(new Wizard_trump)
       publish(new set_Wizard_trump)
@@ -28,14 +28,9 @@ case class Controller @Inject() (var game: GamestateInterface, file_io: File_IO_
     game
   }
 
-  def generate_hands(round_number: Int, players: List[Player]): GamestateInterface = {
-    game = game.generate_Hands(round_number, players)
-    game
-  }
-
   def set_guess(guess: Int): GamestateInterface = {
     game = game.set_guess(guess)
-    if (game.getActive_player_idx == game.getRound_number%player_amount()) {
+    if (game.active_Player_idx == game.round_number%player_amount()) {
       publish(new next_player_card)
       game
     } else {
@@ -45,27 +40,27 @@ case class Controller @Inject() (var game: GamestateInterface, file_io: File_IO_
   }
 
   def play_card(want_to_play: Card): GamestateInterface = {
-    val active_player_idx = game.getActive_player_idx
-    val mini_starter_idx = game.getMini_starter
-    if (!card_playable(game.getPlayers(game.getActive_player_idx), want_to_play, game.getServe_card)) {
+    val active_player_idx = game.active_Player_idx
+    val mini_starter_idx = game.mini_starter_idx
+    if (!card_playable(game.players(game.active_Player_idx), want_to_play, game.serve_card)) {
       publish(new card_not_playable)
       game
     } else {
       if (active_player_idx == (mini_starter_idx+player_amount()-1)%player_amount()) {
-        game = game.playCard(want_to_play, game.getPlayers(active_player_idx))
-        game = game.end_mini(game.getPlayedCards, game.getTrump_card, game.getMini_starter)
+        game = game.playCard(want_to_play, game.players(active_player_idx))
+        game = game.end_mini(game.playedCards, game.trump_Card, game.mini_starter_idx)
         publish(new mini_over)
-        if (game.getMini_played_counter == game.getRound_number + 1) {
-          if (game.getRound_number + 1 == 60/player_amount()) {
-            game = game.round_finished(game.getMade_tricks)
+        if (game.mini_played_counter == game.round_number + 1) {
+          if (game.round_number + 1 == 60/player_amount()) {
+            game = game.round_finished(game.made_tricks)
             publish(new round_over)
             publish(new game_over)
             game
           } else {
-            game = game.round_finished(game.getMade_tricks)
+            game = game.round_finished(game.made_tricks)
             publish(new round_over)
             publish(new start_round)
-            start_round(game.getRound_number)
+            start_round(game.round_number)
             game
           }
         } else {
@@ -73,7 +68,7 @@ case class Controller @Inject() (var game: GamestateInterface, file_io: File_IO_
           game
         }
       } else {
-        game = game.playCard(want_to_play, game.getPlayers(active_player_idx))
+        game = game.playCard(want_to_play, game.players(active_player_idx))
         publish(new next_player_card)
         game
       }
@@ -85,16 +80,16 @@ case class Controller @Inject() (var game: GamestateInterface, file_io: File_IO_
   }
 
   def start_round(round_number: Int): GamestateInterface = {
-    game = generate_hands(round_number, game.getPlayers)
+    game = game.generate_Hands(round_number, game.players)
     game = set_trump_card()
     game
   }
 
-  def get_player(idx: Int) : Player = game.getPlayers(idx)
+  def get_player(idx: Int) : Player = game.players(idx)
 
-  def active_player_idx(): Int = game.getActive_player_idx
+  def active_player_idx(): Int = game.active_Player_idx
 
-  def get_mini_winner(): Player = game.getPlayers(game.getMini_starter)
+  def get_mini_winner(): Player = game.players(game.mini_starter_idx)
 
   def wish_trump(color: String) : GamestateInterface = {
     game = game.wish_trumpcard(color)
@@ -117,13 +112,14 @@ case class Controller @Inject() (var game: GamestateInterface, file_io: File_IO_
     val Undo_Player_Name = new UndoPlayerNameCommand(player_name, this)
     undoManager.doStep(Undo_Player_Name)
 
-    if (game.getActive_player_idx == 0) {
+    if (game.active_Player_idx == 0) {
       publish(new start_round)
-      start_round(game.getRound_number)
-      return game
+      start_round(game.round_number)
+    } else {
+      publish(new player_create)
     }
-    publish(new player_create)
     game
+
   }
 
   def undo_player(): Unit = {
@@ -131,9 +127,7 @@ case class Controller @Inject() (var game: GamestateInterface, file_io: File_IO_
     publish(new player_create)
   }
 
-  def redo_player(): Unit = {
-    undoManager.redoStep()
-  }
+  def redo_player(): Unit = undoManager.redoStep()
 
   override def getGamestate(): GamestateInterface = game
 

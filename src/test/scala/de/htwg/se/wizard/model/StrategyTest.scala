@@ -1,6 +1,5 @@
 package de.htwg.se.wizard.model
 
-import de.htwg.se.wizard.control._
 import de.htwg.se.wizard.control.controllerBaseImpl.Controller
 import de.htwg.se.wizard.model.cardsComponent.{Card, Card_with_value}
 import de.htwg.se.wizard.model.gamestateComponent.GamestateBaseImpl.{Gamestate, Round}
@@ -26,7 +25,7 @@ class StrategyTest extends AnyWordSpec {
         val controller2 = new Controller(game, null)
         controller2.play_card(player1.hand.head)
         controller2.play_card(player2.hand.head)
-        controller2.game.getPlayedCards.contains(player2.hand.head) shouldBe false
+        controller2.game.playedCards.contains(player2.hand.head) shouldBe false
       }
 
       "when the card is playable and its the last player in the mini round" in {
@@ -35,11 +34,11 @@ class StrategyTest extends AnyWordSpec {
         val player3 = Player("drei", List[Card](new Card_with_value(6, "yellow"), new Card_with_value(5, "yellow")))
         var game = Gamestate(round_number = 3, players = List(player1,player2,player3), made_tricks = List.fill(3){0})
         val controller3 = new Controller(game, null)
-        val old_roundNumber = controller3.game.getRound_number
+        val old_roundNumber = controller3.game.round_number
         controller3.play_card(player1.hand.head)
         controller3.play_card(player2.hand(1))
         controller3.play_card(player3.hand.head)
-        controller3.game.getRound_number shouldBe old_roundNumber
+        controller3.game.round_number shouldBe old_roundNumber
       }
 
       "when the card is playable and its the last player in the round" in {
@@ -48,11 +47,11 @@ class StrategyTest extends AnyWordSpec {
         val player3 = Player("drei", List[Card](new Card_with_value(6, "yellow"), new Card_with_value(5, "yellow")))
         val game = Gamestate(mini_played_counter = 0, round_number = 0, players = List(player1,player2,player3), made_tricks = List.fill(3){0}, game_table = List(Round(List.fill(3){0})))
         val controller4 = new Controller(game, null)
-        val old_roundNumber = controller4.game.getRound_number
+        val old_roundNumber = controller4.game.round_number
         controller4.play_card(player1.hand.head)
         controller4.play_card(player2.hand(1))
         controller4.play_card(player3.hand.head)
-        controller4.game.getRound_number shouldBe old_roundNumber +1
+        controller4.game.round_number shouldBe old_roundNumber +1
 
       }
       "when the card is playable and its the last player in the round and the game is over" in {
@@ -65,7 +64,7 @@ class StrategyTest extends AnyWordSpec {
         controller5.play_card(player1.hand.head)
         controller5.play_card(player2.hand(1))
         controller5.play_card(player3.hand.head)
-        controller5.game.getRound_number shouldBe 20
+        controller5.game.round_number shouldBe 20
 
       }
     }

@@ -77,16 +77,16 @@ case class Impl_XML() extends File_IO_Interface {
 
   def gamestate_toXML(game: GamestateInterface): Elem = {
     <Gamestate>
-      {players_toXML(game.getPlayers)}
-      {gametabel_toXML(game.getGame_table)}
-      <Roundnumber>{value_toXML(game.getRound_number)}</Roundnumber>
-      <Active_player_idx>{value_toXML(game.getActive_player_idx)}</Active_player_idx>
-      <Trump_card>{card_toXML(game.getTrump_card)}</Trump_card>
-      <Serve_card>{card_toXML(game.getServe_card)}</Serve_card>
-      <Made_tricks>{for (i <- game.getMade_tricks.indices) yield trick_toXML(game.getMade_tricks(i))}</Made_tricks>
-      <Played_cards>{for (i <- game.getPlayedCards.indices) yield card_toXML(game.getPlayedCards(i))}</Played_cards>
-      <Mini_starter_idx>{game.getMini_starter}</Mini_starter_idx>
-      <Mini_played_counter>{game.getMini_played_counter}</Mini_played_counter>
+      {players_toXML(game.players)}
+      {gametabel_toXML(game.game_table)}
+      <Roundnumber>{value_toXML(game.round_number)}</Roundnumber>
+      <Active_player_idx>{value_toXML(game.active_Player_idx)}</Active_player_idx>
+      <Trump_card>{card_toXML(game.trump_Card)}</Trump_card>
+      <Serve_card>{card_toXML(game.serve_card)}</Serve_card>
+      <Made_tricks>{for (i <- game.made_tricks.indices) yield trick_toXML(game.made_tricks(i))}</Made_tricks>
+      <Played_cards>{for (i <- game.playedCards.indices) yield card_toXML(game.playedCards(i))}</Played_cards>
+      <Mini_starter_idx>{game.mini_starter_idx}</Mini_starter_idx>
+      <Mini_played_counter>{game.mini_played_counter}</Mini_played_counter>
     </Gamestate>
   }
 

@@ -6,16 +6,19 @@ import de.htwg.se.wizard.util.PlayerStrategy
 
 trait GamestateInterface extends PlayerStrategy {
 
-    def getMini_played_counter: Int
-    def getMini_starter: Int
-    def getPlayedCards: List[Card]
-    def getMade_tricks: List[Int]
-    def getServe_card: Card
-    def getTrump_card: Card
-    def getPlayers: List[Player]
-    def getGame_table: List[Round]
-    def getRound_number: Int
-    def getActive_player_idx: Int
+    // variablen ----
+    def players: List[Player]
+    def game_table: List[Round]
+    def round_number: Int
+    def active_Player_idx: Int
+    def trump_Card: Card
+    def serve_card: Card
+    def made_tricks: List[Int]
+    def playedCards: List[Card]
+    def mini_starter_idx: Int
+    def mini_played_counter: Int
+
+
     def round_finished(made: Iterable[Int]): GamestateInterface
     def set_guess(guessed_tricks: Int): GamestateInterface
     def create_player(player_name: String): GamestateInterface
