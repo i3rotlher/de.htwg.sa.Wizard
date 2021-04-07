@@ -1,8 +1,4 @@
-lazy val gamestate = (project in file("Gamestate"))
-lazy val fileio = (project in file("FileIO"))
-
-
-name := "de.htwg.se.Wizard"
+name := "Gamestate"
 
 version := "0.1"
 
