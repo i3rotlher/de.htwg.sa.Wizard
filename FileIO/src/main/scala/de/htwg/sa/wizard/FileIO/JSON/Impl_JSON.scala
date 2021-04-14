@@ -1,8 +1,9 @@
 package de.htwg.sa.wizard.FileIO.JSON
 
+
 import com.google.inject.Guice
-import de.htwg.sa.wizard.WizardModule
 import de.htwg.sa.wizard.FileIO.File_IO_Interface
+import de.htwg.sa.wizard.WizardModule
 import de.htwg.sa.wizard.model.cardsComponent.{Card, Card_with_value}
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.{Gamestate, Round}
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateInterface
@@ -82,6 +83,13 @@ case class Impl_JSON() extends File_IO_Interface {
     import java.io._
     val print_writer = new PrintWriter(new File("gamestate.json"))
     print_writer.write(Json.prettyPrint(gameStateToJson(gamestate, state)))
+    print_writer.close()
+  }
+
+  def save(gamestate_json: String): Unit = {
+    import java.io._
+    val print_writer = new PrintWriter(new File("gamestate.json"))
+    print_writer.write(gamestate_json)
     print_writer.close()
   }
 

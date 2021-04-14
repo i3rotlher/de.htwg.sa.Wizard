@@ -1,66 +1,33 @@
 {
   "state" : "class de.htwg.sa.wizard.control.controllerBaseImpl.next_guess",
   "game_table" : [ {
-    "guessed_tricks" : [ 1, 1, 1 ],
-    "results" : [ 30, -10, -10 ]
-  }, {
-    "guessed_tricks" : [ 0, 1, 1 ],
-    "results" : [ 20, 30, 30 ]
-  }, {
-    "guessed_tricks" : [ 1, 1, 1 ],
-    "results" : [ 30, 30, 30 ]
+    "guessed_tricks" : [ 0, 0, 0 ],
+    "results" : [ ]
   } ],
   "player_amount" : 3,
-  "players_names" : [ "Max", "Niclas", "Prof" ],
+  "players_names" : [ "Ente", "Enter your", "Enter y ..." ],
   "players_hands" : [ [ {
-    "value" : 1,
-    "color" : "green"
-  }, {
-    "value" : 1,
+    "value" : 10,
     "color" : "yellow"
-  }, {
-    "value" : 1,
-    "color" : "blue"
-  }, {
-    "value" : 1,
-    "color" : "red"
   } ], [ {
-    "value" : 2,
-    "color" : "green"
-  }, {
-    "value" : 2,
+    "value" : 1,
     "color" : "yellow"
-  }, {
-    "value" : 2,
-    "color" : "blue"
-  }, {
-    "value" : 2,
-    "color" : "red"
   } ], [ {
-    "value" : 3,
-    "color" : "green"
-  }, {
-    "value" : 3,
-    "color" : "yellow"
-  }, {
-    "value" : 3,
+    "value" : 12,
     "color" : "blue"
-  }, {
-    "value" : 3,
-    "color" : "red"
   } ] ],
-  "round_number" : 4,
-  "active_player_idx" : 1,
+  "round_number" : 0,
+  "active_player_idx" : 0,
   "trump_card" : {
-    "value" : 4,
+    "value" : 13,
     "color" : "green"
   },
   "serve_card" : {
-    "value" : 4,
-    "color" : "yellow"
+    "value" : 0,
+    "color" : "none(green)"
   },
   "made_tricks" : [ 0, 0, 0 ],
   "playedCards" : [ ],
-  "mini_starter_idx" : 1,
+  "mini_starter_idx" : 0,
   "mini_played_counter" : 0
 }

@@ -2,7 +2,7 @@ package de.htwg.sa.wizard.control.controllerBaseImpl
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
+import akka.http.scaladsl.model._
 import akka.http.scaladsl.unmarshalling.Unmarshal
 import com.google.inject.{Guice, Inject}
 import de.htwg.sa.wizard.WizardModule
@@ -11,7 +11,7 @@ import de.htwg.sa.wizard.model.cardsComponent.{Card, Card_with_value, Cards}
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.{Gamestate, Round}
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateInterface
 import de.htwg.sa.wizard.model.playerComponent.PlayerBaseImpl.Player
-import play.api.libs.json.{JsValue, Json}
+import play.api.libs.json.{JsValue, Json, Writes}
 
 import scala.concurrent.Future
 import scala.swing.Publisher
@@ -154,7 +154,7 @@ case class Controller @Inject() (var game: GamestateInterface) extends Controlle
           Unmarshal(res.entity).to[String].onComplete {
             case Failure(_) => sys.error("Oh FUCk unmarshell sucks")
             case Success(result) => {
-              val game_state = load(result)
+              val game_state = load_json(result)
               game = game_state._1
 
               game_state._2 match {
@@ -177,13 +177,11 @@ case class Controller @Inject() (var game: GamestateInterface) extends Controlle
               }
             }
           }
-          }
-
-
+        }
       }
   }
 
-  def load(raw_gamestate: String) : (GamestateInterface, String) = {
+  def load_json(raw_gamestate: String) : (GamestateInterface, String) = {
 
     val injector = Guice.createInjector(new WizardModule)
     val source: String = raw_gamestate
@@ -236,8 +234,67 @@ case class Controller @Inject() (var game: GamestateInterface) extends Controlle
       mini_played_counter = mini_played_counter, active_Player_idx = active_player_idx, round_number = round_number),state)
   }
 
-  override def save(state: Event): Unit = {
-    // alt direkt über methode file_io.save(game, state)
+  def save(state: Event): Unit = {
+
+    implicit val system = ActorSystem(Behaviors.empty, "SingleRequest")
+    // needed for the future flatMap/onComplete in the end
+    implicit val executionContext = system.executionContext
+
+    val gamestate_json_string = Json.prettyPrint(gameStateToJson(game, state))
+
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(method = HttpMethods.POST ,uri = "http://localhost:8080/JSON", entity = gamestate_json_string))
+  }
+
+  implicit val cardWrites = new Writes[Card] {
+    def writes(card: Card) = Json.obj(
+      "value" -> card.num,
+      "color" -> card.colour
+    )
+  }
+
+  implicit val playerWrites = new Writes[Player] {
+    def writes(player: Player) = { Json.obj(
+      "name" -> player.name,
+      "hand" -> Json.toJson(
+        for (card <- player.hand) yield Json.toJson(card)
+      )
+    )
+    }
+  }
+
+  implicit val roundWrites = new Writes[Round] {
+    def writes(round: Round) = {
+      Json.obj(
+        "guessed_tricks" -> Json.toJson(round.guessed_tricks),
+        "results" -> Json.toJson(round.results)
+      )
+    }
+  }
+
+  def gameStateToJson(game: GamestateInterface, state: Event) = {
+    Json.obj(
+      "state" -> state.getClass.toString.replace("class de.htwg.se.wizard.control.controllerBaseImpl.", ""),
+      "game_table" -> game.game_table,
+      "player_amount" -> game.players.size,
+      "players_names" -> Json.toJson(
+        for (player <- game.players) yield {
+          Json.toJson(player.name)
+        }
+      ),
+      "players_hands" -> Json.toJson(
+        for (player <- game.players) yield {
+          Json.toJson(player.hand)
+        }
+      ),
+      "round_number" -> game.round_number,
+      "active_player_idx" -> game.active_Player_idx,
+      "trump_card" -> game.trump_Card,
+      "serve_card" -> game.serve_card,
+      "made_tricks" -> game.made_tricks,
+      "playedCards" -> game.playedCards,
+      "mini_starter_idx" -> game.mini_starter_idx,
+      "mini_played_counter" -> game.mini_played_counter
+    )
   }
 
 }

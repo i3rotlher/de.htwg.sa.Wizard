@@ -6,7 +6,6 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
 import akka.http.scaladsl.server.Directives._
 import de.htwg.sa.wizard.FileIO.JSON.Impl_JSON
-import de.htwg.sa.wizard.FileIO.XML.Impl_XML
 
 case object FileIOService {
   def main(args: Array[String]): Unit = {
@@ -18,18 +17,22 @@ case object FileIOService {
     // load (get) / save (post) von xml und html rein
     val route =
       concat (
-          path("XML") {
-            get {
-            complete(HttpEntity(ContentTypes.`text/plain(UTF-8)`, Impl_XML().load_XML()))
-            }
-          },
-          path("JSON") {
-            get {
-              complete(HttpEntity(ContentTypes.`application/json`, Impl_JSON().load_JSON()))
-            }
-          }
-      )
+              get {
+                path("JSON") {
+                  complete(HttpEntity(ContentTypes.`application/json`, Impl_JSON().load_JSON()))
+                }
+              },
+              post {
+                path("JSON") {
+                  entity(as [String]) { game =>
+                    Impl_JSON().save(game)
+                    println("GAME SAVED")
+                    complete("game saved")
+                  }
+                }
+              }
 
+      )
     val bindingFuture = Http().newServerAt("localhost", 8080).bind(route)
 
     println(s"FileIO Server online at http://localhost:8080/\nPress RETURN to stop...")
