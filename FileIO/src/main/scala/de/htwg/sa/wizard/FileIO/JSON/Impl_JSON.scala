@@ -14,6 +14,11 @@ import scala.swing.event.Event
 
 case class Impl_JSON() extends File_IO_Interface {
 
+  def load_JSON (): String = {
+    val file = scala.io.Source.fromFile("gamestate.json")
+    try file.mkString finally file.close()
+  }
+
   override def load : (GamestateInterface, String) = {
 
     val injector = Guice.createInjector(new WizardModule)

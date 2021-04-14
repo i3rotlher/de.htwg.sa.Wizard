@@ -1,4 +1,4 @@
-package de.htwg.sa.wizard.model
+package de.htwg.sa.wizard
 
 import de.htwg.sa.wizard.model.cardsComponent.Cards
 import org.scalatest.matchers.should.Matchers._

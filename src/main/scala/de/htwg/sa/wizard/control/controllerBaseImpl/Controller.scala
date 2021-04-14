@@ -1,17 +1,24 @@
 package de.htwg.sa.wizard.control.controllerBaseImpl
-
-import com.google.inject.Inject
+import akka.actor.typed.ActorSystem
+import akka.actor.typed.scaladsl.Behaviors
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.{HttpRequest, HttpResponse}
+import akka.http.scaladsl.unmarshalling.Unmarshal
+import com.google.inject.{Guice, Inject}
+import de.htwg.sa.wizard.WizardModule
 import de.htwg.sa.wizard.control.ControllerInteface
-import de.htwg.sa.wizard.FileIO.File_IO_Interface
-import de.htwg.sa.wizard.model.cardsComponent.{Card, Cards}
+import de.htwg.sa.wizard.model.cardsComponent.{Card, Card_with_value, Cards}
+import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.{Gamestate, Round}
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateInterface
 import de.htwg.sa.wizard.model.playerComponent.PlayerBaseImpl.Player
-import de.htwg.sa.wizard.model.cardsComponent.Card
+import play.api.libs.json.{JsValue, Json}
 
+import scala.concurrent.Future
 import scala.swing.Publisher
 import scala.swing.event.Event
+import scala.util.{Failure, Success}
 
-case class Controller @Inject() (var game: GamestateInterface, file_io: File_IO_Interface) extends ControllerInteface with Publisher {
+case class Controller @Inject() (var game: GamestateInterface) extends ControllerInteface with Publisher {
 
   def setGamestate(gamestate: GamestateInterface): Unit = game = gamestate
 
@@ -133,29 +140,105 @@ case class Controller @Inject() (var game: GamestateInterface, file_io: File_IO_
   override def getGamestate(): GamestateInterface = game
 
   override def load(): Unit = {
-    val game_state = file_io.load
-    game = game_state._1
 
-    game_state._2 match {
-      case "name_ok" => publish(new name_ok)
-      case "set_Wizard_trump" => publish(new set_Wizard_trump)
-      case "game_started" => publish(new game_started)
-      case "get_Amount" => publish(new get_Amount)
-      case "player_create" => publish(new player_create)
-      case "round_started" => publish(new round_started)
-      case "start_round" => publish(new start_round)
-      case "Wizard_trump" => publish(new Wizard_trump)
-      case "next_guess" => publish(new next_guess)
-      case "next_player_card" => publish(new next_player_card)
-      case "round_over" => publish(new round_over)
-      case "card_not_playable" => publish(new card_not_playable)
-      case "guesses_set" => publish(new guesses_set)
-      case "mini_over" => publish(new mini_over)
-      case "game_over" => publish(new game_over)
-      case _ => println(game_state._2)
-    }
+    implicit val system = ActorSystem(Behaviors.empty, "SingleRequest")
+    // needed for the future flatMap/onComplete in the end
+    implicit val executionContext = system.executionContext
+
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = "http://localhost:8080/JSON"))
+
+    responseFuture
+      .onComplete {
+        case Failure(_) => sys.error("something wrong")
+        case Success(res) => {
+          Unmarshal(res.entity).to[String].onComplete {
+            case Failure(_) => sys.error("Oh FUCk unmarshell sucks")
+            case Success(result) => {
+              val game_state = load(result)
+              game = game_state._1
+
+              game_state._2 match {
+                case "name_ok" => publish(new name_ok)
+                case "set_Wizard_trump" => publish(new set_Wizard_trump)
+                case "game_started" => publish(new game_started)
+                case "get_Amount" => publish(new get_Amount)
+                case "player_create" => publish(new player_create)
+                case "round_started" => publish(new round_started)
+                case "start_round" => publish(new start_round)
+                case "Wizard_trump" => publish(new Wizard_trump)
+                case "next_guess" => publish(new next_guess)
+                case "next_player_card" => publish(new next_player_card)
+                case "round_over" => publish(new round_over)
+                case "card_not_playable" => publish(new card_not_playable)
+                case "guesses_set" => publish(new guesses_set)
+                case "mini_over" => publish(new mini_over)
+                case "game_over" => publish(new game_over)
+                case _ => println(game_state._2)
+              }
+            }
+          }
+          }
+
+
+      }
   }
 
-  override def save(state: Event): Unit = file_io.save(game, state)
+  def load(raw_gamestate: String) : (GamestateInterface, String) = {
+
+    val injector = Guice.createInjector(new WizardModule)
+    val source: String = raw_gamestate
+    val json = Json.parse(source)
+    val round_number = (json \ "round_number").get.toString.toInt
+    var serve_card = new Card_with_value((json("serve_card") \ "value").get.toString().toInt, (json("serve_card") \ "color").get.toString().replace("\"", ""))
+    val player_amount = (json \ "player_amount").get.toString.toInt
+    val state = (json \ "state").get.toString().replace("\"", "").replace("class de.htwg.sa.wizard.control.controllerBaseImpl.", "")
+    val trump_card = new Card_with_value((json("trump_card") \ "value").get.toString().toInt, (json("trump_card") \ "color").get.toString().replace("\"", ""))
+    val Mini_starter_idx = (json \ "mini_starter_idx").get.toString.toInt
+    val mini_played_counter = (json \ "mini_played_counter").get.toString.toInt
+    val active_player_idx = (json \ "active_player_idx").get.toString().toInt
+
+
+    val players_names = Json.parse((json \ "players_names").get.toString()).as[List[JsValue]]
+    val players_hands = Json.parse((json \ "players_hands").get.toString()).as[List[JsValue]]
+    var player_list = List[Player]()
+    for (p <- players_names.indices) {
+      val name = (players_names(p)).toString().replace("\"", "")
+      var hand = List[Card]()
+      val player_hand = Json.parse(players_hands(p).toString()).as[List[JsValue]]
+      for (card <- 0 until player_hand.size) {
+        hand = hand.appended(new Card_with_value((player_hand(card) \ "value").get.toString().toInt, (player_hand(card) \ "color").get.toString().replace("\"", "")))
+      }
+      player_list = player_list.appended(Player(name, hand))
+    }
+    val gametable = Json.parse((json \ "game_table").get.toString()).as[List[JsValue]]
+    var game_table = List[Round]()
+    for (r <- gametable.indices) {
+      val round = Json.parse(gametable(r).toString())
+      val results = Json.parse((round \ "results").get.toString()).as[List[JsValue]]
+      val guesses = Json.parse((round \ "guessed_tricks").get.toString()).as[List[JsValue]]
+      var result = List[Int]()
+      var guesses_made = List[Int]()
+      for (y <- 0 until player_amount) {
+        if (results.size != 0) {
+          result = result.appended(results(y).toString().toInt)
+        }
+        guesses_made = guesses_made.appended(guesses(y).toString().toInt)
+      }
+      game_table = game_table.appended(Round(guesses_made, result))
+    }
+
+    // da nur bei guess gespeichert wird koennen nur die folgenden werte sein
+    val made_tricks = List.fill(player_amount)(0)
+    val played_cards = List[Card]()
+
+    (Gamestate(players = player_list, game_table = game_table, trump_Card = trump_card,
+      serve_card = serve_card, made_tricks = made_tricks, playedCards = played_cards, mini_starter_idx = Mini_starter_idx,
+      mini_played_counter = mini_played_counter, active_Player_idx = active_player_idx, round_number = round_number),state)
+  }
+
+  override def save(state: Event): Unit = {
+    // alt direkt über methode file_io.save(game, state)
+  }
+
 }
 

@@ -1,6 +1,5 @@
 package de.htwg.sa.wizard.control
 
-import de.htwg.sa.wizard.FileIO.File_IO_Interface
 import de.htwg.sa.wizard.model.cardsComponent.Card
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateInterface
 import de.htwg.sa.wizard.model.playerComponent.PlayerBaseImpl.Player
@@ -27,7 +26,6 @@ trait ControllerInteface extends Publisher{
     def getGamestate(): GamestateInterface
     def setGamestate(gamestate: GamestateInterface): Unit
     val undoManager = new UndoManager()
-    def file_io: File_IO_Interface
     def load(): Unit
     def save(state: Event): Unit
 }

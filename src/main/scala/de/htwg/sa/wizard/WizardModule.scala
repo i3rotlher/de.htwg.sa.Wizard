@@ -13,7 +13,7 @@ import net.codingwell.scalaguice.ScalaModule
 class WizardModule extends AbstractModule with ScalaModule {
   override def configure() = {
     bind[GamestateInterface].toInstance(Gamestate())
-    bind[ControllerInteface].toInstance(Controller(Gamestate(), Impl_JSON()))
+    bind[ControllerInteface].toInstance(Controller(Gamestate()))
     bind[File_IO_Interface].toInstance(Impl_JSON())
   }
 }

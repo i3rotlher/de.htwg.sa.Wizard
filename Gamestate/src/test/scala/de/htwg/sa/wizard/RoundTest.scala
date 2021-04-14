@@ -1,4 +1,4 @@
-package de.htwg.sa.wizard.model
+package de.htwg.sa.wizard
 
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.Round
 import org.scalatest.matchers.should.Matchers._

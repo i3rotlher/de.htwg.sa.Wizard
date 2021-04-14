@@ -1,10 +1,9 @@
-package de.htwg.sa.wizard.model
+package de.htwg.sa.wizard
 
 import de.htwg.sa.wizard.model.cardsComponent.{Card_fool, Card_with_value, Cards}
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.Gamestate
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateInterface
 import de.htwg.sa.wizard.model.playerComponent.PlayerBaseImpl.Player
-import de.htwg.sa.wizard.model.cardsComponent.Card_fool
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec.AnyWordSpec
 

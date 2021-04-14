@@ -11,6 +11,11 @@ import scala.xml._
 
 case class Impl_XML() extends File_IO_Interface {
 
+  def load_XML (): String = {
+    val file = scala.io.Source.fromFile("gamestate.xml")
+    try file.mkString finally file.close()
+  }
+
   override def load: (GamestateInterface, String) = {
     val file = scala.xml.XML.loadFile("gamestate.xml")
 
