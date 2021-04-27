@@ -1,1 +1,33 @@
-Test: JSON
+{
+  "state" : "class de.htwg.sa.wizard.control.controllerBaseImpl.next_guess",
+  "game_table" : [ {
+    "guessed_tricks" : [ 0, 0, 0 ],
+    "results" : [ ]
+  } ],
+  "player_amount" : 3,
+  "players_names" : [ "Max", "Piete", "Peter" ],
+  "players_hands" : [ [ {
+    "value" : 14,
+    "color" : "none(red)"
+  } ], [ {
+    "value" : 13,
+    "color" : "yellow"
+  } ], [ {
+    "value" : 9,
+    "color" : "red"
+  } ] ],
+  "round_number" : 0,
+  "active_player_idx" : 0,
+  "trump_card" : {
+    "value" : 5,
+    "color" : "yellow"
+  },
+  "serve_card" : {
+    "value" : 0,
+    "color" : "none(green)"
+  },
+  "made_tricks" : [ 0, 0, 0 ],
+  "playedCards" : [ ],
+  "mini_starter_idx" : 0,
+  "mini_played_counter" : 0
+}
