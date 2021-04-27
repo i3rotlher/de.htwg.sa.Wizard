@@ -2,6 +2,7 @@ package de.htwg.sa.wizard.model
 
 import de.htwg.sa.wizard.aview.TUI
 import de.htwg.sa.wizard.control.controllerBaseImpl._
+import de.htwg.sa.wizard.model.GamestateComponent.GamestateBaseImpl.GamestateInterface
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.Gamestate
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateInterface
 import org.scalatest.matchers.should.Matchers._

@@ -1,6 +1,5 @@
-package de.htwg.sa.wizard
+package de.htwg.sa.wizard.model
 
-import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.Round
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec.AnyWordSpec
 

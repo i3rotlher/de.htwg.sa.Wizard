@@ -1,4 +1,4 @@
-package de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl
+package de.htwg.sa.wizard.model.GamestateComponent.GamestateBaseImpl
 
 case class Round(guessed_tricks: List[Int], results: List[Int] = List.empty) {
 

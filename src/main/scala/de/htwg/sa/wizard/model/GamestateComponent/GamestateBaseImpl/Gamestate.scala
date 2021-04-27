@@ -1,7 +1,6 @@
-package de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl
+package de.htwg.sa.wizard.model.GamestateComponent.GamestateBaseImpl
 
 import de.htwg.sa.wizard.model.cardsComponent.{Card, Card_with_value, Cards}
-import de.htwg.sa.wizard.model.gamestateComponent.GamestateInterface
 import de.htwg.sa.wizard.model.playerComponent.PlayerBaseImpl.Player
 import de.htwg.sa.wizard.util.PlayerStrategy
 

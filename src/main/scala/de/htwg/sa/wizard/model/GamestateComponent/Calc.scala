@@ -1,6 +1,4 @@
-package de.htwg.sa.wizard.model.gamestateComponent
-
-import de.htwg.sa.wizard.model.cardsComponent.Card
+package de.htwg.sa.wizard.model.GamestateComponent.GamestateBaseImpl
 
 trait Calc {
 
