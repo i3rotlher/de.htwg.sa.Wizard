@@ -2,9 +2,8 @@ package de.htwg.sa.wizard.model
 
 import de.htwg.sa.wizard.aview.TUI
 import de.htwg.sa.wizard.control.controllerBaseImpl._
-import de.htwg.sa.wizard.model.GamestateComponent.GamestateBaseImpl.GamestateInterface
+import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.GamestateInterface
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.Gamestate
-import de.htwg.sa.wizard.model.gamestateComponent.GamestateInterface
 import org.scalatest.matchers.should.Matchers._
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -13,7 +12,7 @@ import scala.util.Success
 class TUITest extends AnyWordSpec {
   "The TUI" should {
 
-    val controller = new Controller(Gamestate(), null)
+    val controller = new Controller(Gamestate())
     controller.set_player_amount(Some(3))
     val tui = new TUI(controller)
 

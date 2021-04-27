@@ -1,7 +1,7 @@
 package de.htwg.sa.wizard.control
 
 import de.htwg.sa.wizard.model.cardsComponent.Card
-import de.htwg.sa.wizard.model.gamestateComponent.GamestateInterface
+import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.GamestateInterface
 import de.htwg.sa.wizard.model.playerComponent.PlayerBaseImpl.Player
 import de.htwg.sa.wizard.util.UndoManager
 

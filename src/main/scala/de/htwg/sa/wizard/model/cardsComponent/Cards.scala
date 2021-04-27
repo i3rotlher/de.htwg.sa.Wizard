@@ -1,6 +1,6 @@
 package de.htwg.sa.wizard.model.cardsComponent
 
-import de.htwg.sa.wizard.model.gamestateComponent.{Calc, Random}
+import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.{Calc, Random}
 
 case object Cards extends Calc with Random {
 

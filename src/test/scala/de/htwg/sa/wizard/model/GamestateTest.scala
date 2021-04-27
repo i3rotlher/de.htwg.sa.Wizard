@@ -1,6 +1,6 @@
 package de.htwg.sa.wizard.model
 
-import de.htwg.sa.wizard.model.GamestateComponent.GamestateBaseImpl.GamestateInterface
+import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.{Gamestate, GamestateInterface}
 import de.htwg.sa.wizard.model.cardsComponent.{Card_fool, Card_with_value, Cards}
 import de.htwg.sa.wizard.model.playerComponent.PlayerBaseImpl.Player
 import org.scalatest.matchers.should.Matchers._

@@ -1,6 +1,6 @@
 package de.htwg.sa.wizard.util
 
-import de.htwg.sa.wizard.model.gamestateComponent.GamestateInterface
+import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.GamestateInterface
 
 trait PlayerStrategy {
   def strategy(amount_of_players: Int): GamestateInterface

@@ -1,4 +1,4 @@
-package de.htwg.sa.wizard.model.GamestateComponent.GamestateBaseImpl
+package de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl
 
 import de.htwg.sa.wizard.model.cardsComponent.Card
 import de.htwg.sa.wizard.model.playerComponent.PlayerBaseImpl.Player

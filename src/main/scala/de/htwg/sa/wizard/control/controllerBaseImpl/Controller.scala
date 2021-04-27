@@ -8,8 +8,8 @@ import com.google.inject.{Guice, Inject}
 import de.htwg.sa.wizard.WizardModule
 import de.htwg.sa.wizard.control.ControllerInteface
 import de.htwg.sa.wizard.model.cardsComponent.{Card, Card_with_value, Cards}
-import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.{Gamestate, Round}
-import de.htwg.sa.wizard.model.gamestateComponent.GamestateInterface
+import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.{Gamestate, GamestateInterface, Round}
+import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.GamestateInterface
 import de.htwg.sa.wizard.model.playerComponent.PlayerBaseImpl.Player
 import play.api.libs.json.{JsValue, Json, Writes}
 

@@ -19,7 +19,7 @@ case object FileIOService {
       concat (
               get {
                 path("JSON") {
-                  complete(HttpEntity(ContentTypes.`application/json`, Impl_JSON().load_JSON()))
+                  complete(HttpEntity(ContentTypes.`application/json`, Impl_JSON().load()))
                 }
               },
               post {
