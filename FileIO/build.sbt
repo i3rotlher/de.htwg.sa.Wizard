@@ -24,3 +24,5 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies += "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion
+
+mainClass in (Compile, run) := Some("de.htwg.sa.wizard.FileIO.FileIOService")

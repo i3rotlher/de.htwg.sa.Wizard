@@ -9,7 +9,6 @@ import de.htwg.sa.wizard.WizardModule
 import de.htwg.sa.wizard.control.ControllerInteface
 import de.htwg.sa.wizard.model.cardsComponent.{Card, Card_with_value, Cards}
 import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.{Gamestate, GamestateInterface, Round}
-import de.htwg.sa.wizard.model.gamestateComponent.GamestateBaseImpl.GamestateInterface
 import de.htwg.sa.wizard.model.playerComponent.PlayerBaseImpl.Player
 import play.api.libs.json.{JsValue, Json, Writes}
 
@@ -145,7 +144,7 @@ case class Controller @Inject() (var game: GamestateInterface) extends Controlle
     // needed for the future flatMap/onComplete in the end
     implicit val executionContext = system.executionContext
 
-    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = "http://localhost:8080/JSON"))
+    val responseFuture: Future[HttpResponse] = Http().singleRequest(HttpRequest(uri = "http://localhost:8085/JSON"))
 
     responseFuture
       .onComplete {

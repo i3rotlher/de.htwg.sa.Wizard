@@ -3,7 +3,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends openjfx && \
     rm -rf /var/lib/apt/lists/* && \
     apt-get install -y sbt libxrender1 libxtst6 libxi6
-WORKDIR /Wizard
-ADD . /Wizard
-EXPOSE 8080
+WORKDIR /FileIO
+ADD . /FileIO
+EXPOSE 8085
 CMD sbt run

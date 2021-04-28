@@ -33,8 +33,8 @@ case object FileIOService {
               }
 
       )
-    val bindingFuture = Http().newServerAt("localhost", 8080).bind(route)
+    val bindingFuture = Http().newServerAt("localhost", 8085).bind(route)
 
-    println(s"FileIO Server online at http://localhost:8080/\nPress RETURN to stop...")
+    println(s"FileIO Server online at http://localhost:8085/\nPress RETURN to stop...")
   }
 }
