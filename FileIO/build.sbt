@@ -1,8 +1,4 @@
-//lazy val root = (project in file(".")).aggregate(fileio)
-lazy val fileio = (project in file("FileIO"))
-
-
-name := "de.htwg.se.Wizard"
+name := "FileIO"
 
 version := "0.1"
 
@@ -28,3 +24,5 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies += "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion
+
+mainClass in (Compile, run) := Some("de.htwg.sa.wizard.FileIO.FileIOService")
