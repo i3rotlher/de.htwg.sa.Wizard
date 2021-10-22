@@ -12,7 +12,7 @@ import scala.io.StdIn
 object HttpServerRoutingMinimal {
 
   def main(args: Array[String]): Unit = {
-
+    // Comment
     implicit val system = ActorSystem(Behaviors.empty, "my-system")
     // needed for the future flatMap/onComplete in the end
     implicit val executionContext = system.executionContext
